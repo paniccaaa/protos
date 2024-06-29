@@ -33,7 +33,7 @@ message IsAdminResponse {
 message RegisterRequest {
   string email = 1; // Username of the user to register.
   string password = 2; // Password of the user to register.
-  Role role = 3;       // Role of the user (student or teacher).
+  string role = 3;       // Role of the user (student or teacher).
 }
 
 message RegisterResponse {
@@ -55,7 +55,7 @@ message UserIdRequest {
 }
 
 message RoleResponse {
-  Role role = 1;       // Role of the user (student or teacher).
+  string role = 1;       // Role of the user (student or teacher).
 }
 
 message LogoutRequest {
@@ -64,10 +64,5 @@ message LogoutRequest {
 
 message LogoutResponse {
   bool success = 1;    // Indicates whether the logout was successful.
-}
-
-enum Role {
-  STUDENT = 0;
-  TEACHER = 1;
 }
 
