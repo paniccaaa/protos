@@ -1,13 +1,59 @@
+// syntax = "proto3";
+
+// package runner;
+
+// option go_package = "paniccaaa.runner;run";
+
+// service Runner {
+//   rpc RunCode(CodeRequest) returns (CodeResponse);
+//   rpc ShareCode(CodeRequest) returns (ShareResponse);
+//   rpc GetCodeByID(IdRequest) returns (CodeResponse);
+// }
+
+// message CodeRequest {
+//   string code = 1;
+// }
+
+// message CodeResponse {
+//   string code = 1;
+//   string output = 2;
+//   string error = 3;
+// }
+
+// message IdRequest {
+//   int64 id = 1;
+// }
+
+// message ShareResponse {
+//   int64 id = 1;
+// }
+
 syntax = "proto3";
 
 package runner;
 
 option go_package = "paniccaaa.runner;run";
 
+import "google/api/annotations.proto";
+
 service Runner {
-  rpc RunCode(CodeRequest) returns (CodeResponse);
-  rpc ShareCode(CodeRequest) returns (ShareResponse);
-  rpc GetCodeByID(IdRequest) returns (CodeResponse);
+  rpc RunCode(CodeRequest) returns (CodeResponse) {
+    option (google.api.http) = {
+      post: "/run"
+      body: "*"
+    };
+  }
+  rpc ShareCode(CodeRequest) returns (ShareResponse) {
+    option (google.api.http) = {
+      post: "/share"
+      body: "*"
+    };
+  }
+  rpc GetCodeByID(IdRequest) returns (CodeResponse) {
+    option (google.api.http) = {
+      get: "/shared/{id}"
+    };
+  }
 }
 
 message CodeRequest {
