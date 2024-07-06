@@ -25,5 +25,5 @@ message IdRequest {
 }
 
 message ShareResponse {
-  string url = 1;
+  int64 id = 1;
 }
