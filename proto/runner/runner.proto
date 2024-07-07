@@ -1,33 +1,3 @@
-// syntax = "proto3";
-
-// package runner;
-
-// option go_package = "paniccaaa.runner;run";
-
-// service Runner {
-//   rpc RunCode(CodeRequest) returns (CodeResponse);
-//   rpc ShareCode(CodeRequest) returns (ShareResponse);
-//   rpc GetCodeByID(IdRequest) returns (CodeResponse);
-// }
-
-// message CodeRequest {
-//   string code = 1;
-// }
-
-// message CodeResponse {
-//   string code = 1;
-//   string output = 2;
-//   string error = 3;
-// }
-
-// message IdRequest {
-//   int64 id = 1;
-// }
-
-// message ShareResponse {
-//   int64 id = 1;
-// }
-
 syntax = "proto3";
 
 package runner;
