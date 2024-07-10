@@ -25,6 +25,7 @@ type RunnerClient interface {
 	RunCode(ctx context.Context, in *CodeRequest, opts ...grpc.CallOption) (*CodeResponse, error)
 	ShareCode(ctx context.Context, in *CodeRequest, opts ...grpc.CallOption) (*ShareResponse, error)
 	GetCodeByID(ctx context.Context, in *IdRequest, opts ...grpc.CallOption) (*CodeResponse, error)
+	DeleteCode(ctx context.Context, in *DeleteCodeRequest, opts ...grpc.CallOption) (*DeleteCodeResponse, error)
 }
 
 type runnerClient struct {
@@ -62,6 +63,15 @@ func (c *runnerClient) GetCodeByID(ctx context.Context, in *IdRequest, opts ...g
 	return out, nil
 }
 
+func (c *runnerClient) DeleteCode(ctx context.Context, in *DeleteCodeRequest, opts ...grpc.CallOption) (*DeleteCodeResponse, error) {
+	out := new(DeleteCodeResponse)
+	err := c.cc.Invoke(ctx, "/runner.Runner/DeleteCode", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RunnerServer is the server API for Runner service.
 // All implementations must embed UnimplementedRunnerServer
 // for forward compatibility
@@ -69,6 +79,7 @@ type RunnerServer interface {
 	RunCode(context.Context, *CodeRequest) (*CodeResponse, error)
 	ShareCode(context.Context, *CodeRequest) (*ShareResponse, error)
 	GetCodeByID(context.Context, *IdRequest) (*CodeResponse, error)
+	DeleteCode(context.Context, *DeleteCodeRequest) (*DeleteCodeResponse, error)
 	mustEmbedUnimplementedRunnerServer()
 }
 
@@ -84,6 +95,9 @@ func (UnimplementedRunnerServer) ShareCode(context.Context, *CodeRequest) (*Shar
 }
 func (UnimplementedRunnerServer) GetCodeByID(context.Context, *IdRequest) (*CodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCodeByID not implemented")
+}
+func (UnimplementedRunnerServer) DeleteCode(context.Context, *DeleteCodeRequest) (*DeleteCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCode not implemented")
 }
 func (UnimplementedRunnerServer) mustEmbedUnimplementedRunnerServer() {}
 
@@ -152,6 +166,24 @@ func _Runner_GetCodeByID_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Runner_DeleteCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RunnerServer).DeleteCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/runner.Runner/DeleteCode",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RunnerServer).DeleteCode(ctx, req.(*DeleteCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Runner_ServiceDesc is the grpc.ServiceDesc for Runner service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +202,10 @@ var Runner_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCodeByID",
 			Handler:    _Runner_GetCodeByID_Handler,
+		},
+		{
+			MethodName: "DeleteCode",
+			Handler:    _Runner_DeleteCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

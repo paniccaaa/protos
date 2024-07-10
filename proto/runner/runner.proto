@@ -23,6 +23,11 @@ service Runner {
     option (google.api.http) = {
       get: "/shared/{id}"
     };
+  } 
+  rpc DeleteCode(DeleteCodeRequest) returns (DeleteCodeResponse) {
+    option (google.api.http) = {
+      delete: "/shared/{id}"
+    };
   }
 }
 
@@ -42,4 +47,13 @@ message IdRequest {
 
 message ShareResponse {
   int64 id = 1;
+}
+
+message DeleteCodeRequest {
+  int64 id = 1;
+  int64 user_id = 2;
+}
+
+message DeleteCodeResponse {
+  bool success = 1;
 }
